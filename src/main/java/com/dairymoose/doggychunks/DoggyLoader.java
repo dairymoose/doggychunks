@@ -15,6 +15,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.world.ForgeChunkManager.LoadingValidationCallback;
 import net.minecraftforge.common.world.ForgeChunkManager.TicketHelper;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class DoggyLoader implements Runnable, LoadingValidationCallback {
@@ -43,7 +45,7 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 	}
 	
 	public static ResourceKey<Level> getKey(String dimension) {
-		return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+		return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dimension));
 	}
 	
 	public int getQuoteCount(String text) {
@@ -87,7 +89,7 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 						double x = dogTag.getDouble("x");
 						double y = dogTag.getDouble("y");
 						double z = dogTag.getDouble("z");
-						BlockPos dogPos = new BlockPos(x, y, z);
+						BlockPos dogPos = BlockPos.containing(x, y, z);
 						//Minecraft.getInstance().player.displayClientMessage(new TextComponent("name=" + name + ", xyz=" + x +" " + y  + " "+ z), false);
 						ChunkPos chunkCoord = new ChunkPos(dogPos);
 						//Minecraft.getInstance().player.displayClientMessage(new TextComponent("chunk coords = " + chunkCoord), false);
