@@ -102,7 +102,7 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 						ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(getKey(dimension));
 						if (!level.isLoaded(dogPos) && !DoggyLoader.loadedChunks.contains(chunkInfo)) {
 							DoggyLoader.loadedChunks.add(chunkInfo);
-							DoggyLoader.addChunk(ServerLifecycleHooks.getCurrentServer().getLevel(getKey(dimension)), chunkCoord);
+							DoggyLoader.addChunk(ServerLifecycleHooks.getCurrentServer().getLevel(getKey(dimension)), chunkCoord, dogName);
 						}
 					}
 				}
@@ -151,12 +151,12 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 		}
 	}
 	
-	private static void addChunk(ServerLevel level, ChunkPos chunkCoord) {
+	private static void addChunk(ServerLevel level, ChunkPos chunkCoord, String dogName) {
 		//if (ForgeChunkManager.forceChunk(level, DoggyChunks.MODID, origin, chunkCoord.x, chunkCoord.z, true, true)) {
 		if (level.setChunkForced(chunkCoord.x, chunkCoord.z, true)) {
-			LOGGER.info("[DoggyChunks] Load chunk success: " + chunkCoord);
+			LOGGER.info("[DoggyChunks] Load chunk success: " + chunkCoord + " for dog=" + dogName);
 		} else {
-			LOGGER.info("[DoggyChunks] Load chunk failure: " + chunkCoord);
+			LOGGER.info("[DoggyChunks] Load chunk failure: " + chunkCoord + " for dog=" + dogName);
 		}
 	}
 	

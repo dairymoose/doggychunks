@@ -30,7 +30,7 @@ public class DoggyChunks
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private static final DoggyLoader loader = new DoggyLoader();
-    private static int DELAY_SECONDS = 10;
+    private static int DELAY_SECONDS = 5;
     private static int DELAY_SERVER_TICKS = 20 * DELAY_SECONDS;
 
     public DoggyChunks() {
