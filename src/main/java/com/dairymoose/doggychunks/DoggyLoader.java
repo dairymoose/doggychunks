@@ -14,7 +14,6 @@ import com.mojang.datafixers.util.Pair;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -27,7 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.world.ForgeChunkManager.LoadingValidationCallback;
 import net.minecraftforge.common.world.ForgeChunkManager.TicketHelper;
-import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class DoggyLoader implements Runnable, LoadingValidationCallback {
@@ -61,6 +61,10 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 	
 	@Override
 	public void run() {
+		loadDoggyChunks();
+	}
+
+	public void loadDoggyChunks() {
 		if (file == null) {
 			
 			String folderPath = DoggyLoader.getFolderPath();

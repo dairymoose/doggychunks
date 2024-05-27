@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +31,7 @@ public class DoggyChunks
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private static final DoggyLoader loader = new DoggyLoader();
     private static int DELAY_SECONDS = 10;
+    private static int DELAY_SERVER_TICKS = 20 * DELAY_SECONDS;
 
     public DoggyChunks() {
         // Register the setup method for modloading
@@ -41,7 +44,7 @@ public class DoggyChunks
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         
-        ForgeChunkManager.setForcedChunkLoadingCallback(DoggyChunks.MODID, loader);
+        //ForgeChunkManager.setForcedChunkLoadingCallback(DoggyChunks.MODID, loader);
     }
     
     private void setup(final FMLCommonSetupEvent event)
@@ -59,13 +62,24 @@ public class DoggyChunks
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-    	
-        executor.scheduleAtFixedRate(loader, DELAY_SECONDS, DELAY_SECONDS, TimeUnit.SECONDS);
+        //executor.scheduleAtFixedRate(loader, DELAY_SECONDS, DELAY_SECONDS, TimeUnit.SECONDS);
+    }
+    
+    public long tickCount = 0;
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent event) {
+    	if (event.phase == TickEvent.Phase.START) {
+    		++tickCount;
+    		
+    		if (tickCount % DELAY_SERVER_TICKS == 0) {
+    			loader.loadDoggyChunks();
+    		}
+    	}
     }
     
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
-    	executor.shutdown();
+    	//executor.shutdown();
         DoggyLoader.cleanup();
     }
 
