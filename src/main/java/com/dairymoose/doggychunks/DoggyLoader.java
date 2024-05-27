@@ -41,7 +41,7 @@ public class DoggyLoader implements Runnable, LoadingValidationCallback {
 	public static String getFolderPath() {
 		Path path = ServerLifecycleHooks.getCurrentServer().getWorldPath(LevelResource.ROOT);
 		
-		return path.toAbsolutePath().toString() + "\\data\\dog_locations.dat";
+		return path.toAbsolutePath().toString() + "\\data\\doggytalentsDogLocations.dat";
 	}
 	
 	public static ResourceKey<Level> getKey(String dimension) {
